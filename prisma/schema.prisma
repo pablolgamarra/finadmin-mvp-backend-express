@@ -1,0 +1,39 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../generated/prisma"
+}
+
+datasource db {
+    provider = "sqlite"
+}
+
+model Deuda {
+    id                 Int      @id @default(autoincrement())
+    nombre             String
+    acreedor           Acreedor @relation(fields: [acreedorId], references: [id])
+    montoTotal         Decimal
+    cuotas             Cuota[]
+    fechaInicio        DateTime
+    fechaCreacion      DateTime @default(now())
+    fechaActualizacion DateTime @updatedAt
+    acreedorId         Int
+}
+
+model Cuota {
+    id                 Int       @id @default(autoincrement())
+    orden              Int
+    monto              Decimal
+    fechaVencimiento   DateTime?
+    fechaCreacion      DateTime  @default(now())
+    fechaActualizacion DateTime  @updatedAt
+    deuda              Deuda?    @relation(fields: [deudaId], references: [id])
+    deudaId            Int?
+}
+
+model Acreedor {
+    id                 Int      @id @default(autoincrement())
+    nombre             String
+    fechaCreacion      DateTime @default(now())
+    fechaActualizacion DateTime @updatedAt
+    deudas             Deuda[]
+}
