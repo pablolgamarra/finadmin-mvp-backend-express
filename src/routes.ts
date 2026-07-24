@@ -1,11 +1,10 @@
 import { Router } from "express";
+import deudasRouter from "@deudas/deudas.routes";
+import acreedoresRouter from "@acreedores/acreedores.routes";
 
 const router: Router = Router();
 
-router.get('/', (_, res) => {
-    res.status(200).json({ message: 'Deudas route' });
-});
+router.use("/deudas", deudasRouter);
+router.use("/acreedores", acreedoresRouter);
 
-router.get('/deudas', (_, res) => {
-    res.status(200).json({ message: 'Deudas route' });
-});
+export default router;

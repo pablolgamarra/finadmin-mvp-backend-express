@@ -1,14 +1,11 @@
 import express from 'express';
-import DeudasRouter from "@deudas/deudas.routes.ts";
+import { logRequest } from 'modules/middlewares/logMiddle';
+import appRouter from "routes";
 
 const app = express();
-const deudasRouter = DeudasRouter;
-
-app.use('/deudas', deudasRouter);
-
-app.get('/', (_, res) => {
-    res.send('Hello World!');
-})
+app.use(express.json());
+app.use(logRequest);
+app.use(appRouter);
 
 const port = process.env.SERVER_PORT || 3000;
 

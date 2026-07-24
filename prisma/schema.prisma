@@ -17,6 +17,8 @@ model Deuda {
     fechaCreacion      DateTime @default(now())
     fechaActualizacion DateTime @updatedAt
     acreedorId         Int
+    eliminado          Boolean  @default(false)
+    finalizado         Boolean  @default(false)
 }
 
 model Cuota {

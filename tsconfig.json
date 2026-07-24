@@ -41,8 +41,10 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-        "@prisma" : ["lib/prisma.ts"],
-        "@deudas/*": ["modules/deudas/*"]
+        "@prismaClient" : ["lib/prisma.ts"],
+        "@deudas/*": ["modules/deudas/*"],
+        "@acreedores/*": ["modules/acreedores/*"],
+
     }
   },
   "ts-node": {

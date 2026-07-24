@@ -7,6 +7,8 @@ CREATE TABLE "Deuda" (
     "fechaCreacion" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "fechaActualizacion" DATETIME NOT NULL,
     "acreedorId" INTEGER NOT NULL,
+    "eliminado" BOOLEAN NOT NULL DEFAULT false,
+    "finalizado" BOOLEAN NOT NULL DEFAULT false,
     CONSTRAINT "Deuda_acreedorId_fkey" FOREIGN KEY ("acreedorId") REFERENCES "Acreedor" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
