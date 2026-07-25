@@ -1,6 +1,6 @@
 generator client {
     provider = "prisma-client"
-    output   = "../generated/prisma"
+    output   = "../src/lib/prisma/generated"
 }
 
 datasource db {
@@ -35,6 +35,8 @@ model Cuota {
 model Acreedor {
     id                 Int      @id @default(autoincrement())
     nombre             String
+    telefono           String
+    comentarios        String
     fechaCreacion      DateTime @default(now())
     fechaActualizacion DateTime @updatedAt
     deudas             Deuda[]
