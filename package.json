@@ -4,6 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"generate": "prisma generate",
+		"migrate": "prisma migrate dev",
 		"dev": "tsx watch src/index.ts",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
