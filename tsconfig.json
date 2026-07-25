@@ -23,7 +23,7 @@
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
 
     // Style Options
     // "noImplicitReturns": true,
@@ -34,7 +34,7 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
@@ -42,9 +42,9 @@
     "baseUrl": "./src",
     "paths": {
         "@prismaClient" : ["lib/prisma.ts"],
+        "@prismaGenerated" : ["lib/prisma/generated/client.ts"],
         "@deudas/*": ["modules/deudas/*"],
         "@acreedores/*": ["modules/acreedores/*"],
-
     }
   },
   "ts-node": {
