@@ -40,4 +40,5 @@ model Acreedor {
     fechaCreacion      DateTime @default(now())
     fechaActualizacion DateTime @updatedAt
     deudas             Deuda[]
+    eliminado          Boolean  @default(false)
 }

@@ -84,7 +84,7 @@ export default class AcreedoresRepository implements IRepository<Acreedor, Crear
 
     public async eliminar(id: number): Promise<Acreedor> {
         try {
-            return await prisma.acreedor.delete({ where: { id } });
+            return await prisma.acreedor.update({ where: { id }, data: { eliminado: true } });
         } catch (e) {
             if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
                 throw new ItemNotFoundError("Acreedor");
