@@ -46,7 +46,9 @@
         "@prismaGenerated/*" :  ["lib/prisma/generated/*"],
         "@deudas/*": ["modules/deudas/*"],
         "@acreedores/*": ["modules/acreedores/*"],
-        "@errors/*": ["errors/*"]
+        "@errors/*": ["errors/*"],
+        "@utils/*": ["utils/*"],
+
     }
   },
   "ts-node": {
