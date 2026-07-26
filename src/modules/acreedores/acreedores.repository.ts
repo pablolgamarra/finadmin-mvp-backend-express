@@ -2,7 +2,7 @@ import { prisma } from "@prismaClient";
 import { AcreedorCreateInput, AcreedorUpdateInput } from "@prismaGenerated/models/Acreedor";
 import { Prisma, type Acreedor } from "@prismaGeneratedClient";
 import type { IRepository } from "interfaces/IRepository";
-import type { ActualizarAcreedorDTO, CrearAcreedorDTO } from "@acreedores/acreedores.dtos";
+import type { ActualizarAcreedorDTO, CrearAcreedorDTO } from "@acreedores/acreedores.schemas";
 import InvalidDtoError from "@errors/InvalidDtoError";
 import RepositoryError from "@errors/RepositoryError";
 import ItemNotFoundError from "@errors/ItemNotFoundError";

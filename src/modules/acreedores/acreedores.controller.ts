@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
 import type AcreedoresRepository from "@acreedores/acreedores.repository";
-import type { ActualizarAcreedorDTO, CrearAcreedorDTO } from "@acreedores/acreedores.dtos";
+import type { ActualizarAcreedorDTO, CrearAcreedorDTO } from "@acreedores/acreedores.schemas";
 import InvalidQueryError from "@errors/InvalidQueryError";
 import InvalidDtoError from "@errors/InvalidDtoError";
+import { sendSuccess } from "@utils/sendSucess";
 
 export default class AcreedoresController {
     private _repo: AcreedoresRepository;
@@ -13,7 +14,7 @@ export default class AcreedoresController {
 
     crearAcreedor = async (req: Request<{}, {}, CrearAcreedorDTO>, res: Response, next: NextFunction) => {
         try {
-            return res.status(200).json(await this._repo.crear(req.body));
+            return res.status(201).json(await this._repo.crear(req.body));
         } catch (e) {
             next(e);
         }
@@ -31,7 +32,9 @@ export default class AcreedoresController {
                 throw new InvalidDtoError('Id no válido');
             }
 
-            return res.status(200).json(await this._repo.obtenerPorId(idNumerico));
+            const acreedor = await this._repo.obtenerPorId(idNumerico)
+
+            return sendSuccess(res, acreedor);
         } catch (e) {
             next(e);
         }
@@ -39,7 +42,9 @@ export default class AcreedoresController {
 
     obtenerTodosLosAcreedores = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            return res.status(200).json(await this._repo.obtenerTodos());
+            const acreedores = await this._repo.obtenerTodos();
+
+            return sendSuccess(res, acreedores);
         } catch (e) {
             next(e);
         }
