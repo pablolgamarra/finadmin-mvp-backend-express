@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import type { Acreedor } from "../../../generated/prisma/client";
 import type AcreedoresRepository from "@acreedores/acreedores.repository";
+import type { ActualizarAcreedorDTO, CrearAcreedorDTO } from "@acreedores/acreedores.dtos";
+import InvalidQueryError from "@errors/InvalidQueryError";
+import InvalidDtoError from "@errors/InvalidDtoError";
 
 export default class AcreedoresController {
     private _repo: AcreedoresRepository;
@@ -9,23 +11,73 @@ export default class AcreedoresController {
         this._repo = acreedoresRepository;
     }
 
-    registrarAcreedor = async (req: Request<{ acreedor: Partial<Acreedor> }>, res: Response, next: NextFunction) => {
-        return res.status(200).json(await this._repo.crear(req.body));
+    crearAcreedor = async (req: Request<{}, {}, CrearAcreedorDTO>, res: Response, next: NextFunction) => {
+        try {
+            return res.status(200).json(await this._repo.crear(req.body));
+        } catch (e) {
+            next(e);
+        }
     }
 
     obtenerAcreedorPorId = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
-        return res.status(200).json(await this._repo.obtenerPorId(req.params.id));
+        try {
+            if (!req.params.id) {
+                throw new InvalidQueryError('Parametro ID no encontrado');
+            }
+
+            const idNumerico = Number(req.params.id);
+
+            if (Number.isNaN(idNumerico)) {
+                throw new InvalidDtoError('Id no válido');
+            }
+
+            return res.status(200).json(await this._repo.obtenerPorId(idNumerico));
+        } catch (e) {
+            next(e);
+        }
     }
 
     obtenerTodosLosAcreedores = async (req: Request, res: Response, next: NextFunction) => {
-        return res.status(200).json(await this._repo.obtenerTodos());
+        try {
+            return res.status(200).json(await this._repo.obtenerTodos());
+        } catch (e) {
+            next(e);
+        }
     }
 
-    actualizarAcreedor = async (req: Request<{ id: string; acreedor: Partial<Acreedor> }>, res: Response, next: NextFunction) => {
-        return res.status(200).json(await this._repo.actualizar(req.params.id, req.body));
+    actualizarAcreedor = async (req: Request<{ id: string }, {}, ActualizarAcreedorDTO>, res: Response, next: NextFunction) => {
+        try {
+            if (!req.params.id) {
+                throw new InvalidQueryError('Parametro ID no encontrado');
+            }
+
+            const idNumerico = Number(req.params.id);
+
+            if (Number.isNaN(idNumerico)) {
+                throw new InvalidDtoError('Id no válido');
+            }
+
+            return res.status(200).json(await this._repo.actualizar(idNumerico, req.body));
+        } catch (e) {
+            next(e);
+        }
     }
 
     eliminarAcreedor = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
-        return res.status(200).json(await this._repo.eliminar(req.params.id));
+        try {
+            if (!req.params.id) {
+                throw new InvalidQueryError('Parametro ID no encontrado');
+            }
+
+            const idNumerico = Number(req.params.id);
+
+            if (Number.isNaN(idNumerico)) {
+                throw new InvalidDtoError('Id no válido');
+            }
+
+            return res.status(200).json(await this._repo.eliminar(idNumerico));
+        } catch (e) {
+            next(e);
+        }
     }
 }

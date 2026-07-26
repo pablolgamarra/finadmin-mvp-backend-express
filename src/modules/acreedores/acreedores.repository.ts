@@ -1,71 +1,95 @@
-import type { IRepository } from "interfaces/IRepository";
 import { prisma } from "@prismaClient";
+import { AcreedorCreateInput, AcreedorUpdateInput } from "@prismaGenerated/models/Acreedor";
+import { Prisma, type Acreedor } from "@prismaGeneratedClient";
+import type { IRepository } from "interfaces/IRepository";
+import type { ActualizarAcreedorDTO, CrearAcreedorDTO } from "@acreedores/acreedores.dtos";
+import InvalidDtoError from "@errors/InvalidDtoError";
+import RepositoryError from "@errors/RepositoryError";
+import ItemNotFoundError from "@errors/ItemNotFoundError";
 
-export default class AcreedoresRepository implements IRepository {
-    public async crear(entidad: any): Promise<any> {
-        if (!entidad) {
-            throw new Error("Entidad no proporcionada");
+export default class AcreedoresRepository implements IRepository<Acreedor, CrearAcreedorDTO> {
+    public async crear(dto: CrearAcreedorDTO): Promise<Acreedor> {
+        if (!dto) {
+            throw new InvalidDtoError;
         }
 
-        const acreedorCreado = await prisma.acreedor.create({
-            data: entidad,
-        });
+        try {
+            const dataCrear: AcreedorCreateInput = {
+                nombre: dto.nombre,
+                comentarios: dto.comentarios,
+                telefono: dto.telefono
+            };
 
-        return acreedorCreado;
+            const acreedorCreado = await prisma.acreedor.create({
+                data: dataCrear,
+            });
+
+            return acreedorCreado;
+        } catch (e) {
+            throw new RepositoryError(`Error al guardar acreedor.`, e);
+        }
     }
 
-    public async obtenerPorId(id: string): Promise<any> {
-        const idNumerico = Number(id);
-
-        if (Number.isNaN(idNumerico)) {
-            throw new Error("Id inválido");
+    public async obtenerPorId(id: number): Promise<Acreedor> {
+        let acreedor;
+        try {
+            acreedor = await prisma.acreedor.findUnique({ where: { id } });
+        } catch (e) {
+            throw new RepositoryError(`Error al obtener acreedor por id ${id}.`, e);
         }
 
-        const acreedor = await prisma.acreedor.findUnique({
-            where: { id: idNumerico },
-        });
-
         if (!acreedor) {
-            throw new Error(`Acreedor con id ${id} no encontrado`);
+            throw new ItemNotFoundError("Acreedor");
         }
 
         return acreedor;
     }
 
-    public async obtenerTodos(): Promise<any[]> {
-        return prisma.acreedor.findMany();
+    public async obtenerTodos(): Promise<Acreedor[]> {
+        let acreedores;
+        try {
+            acreedores = await prisma.acreedor.findMany();
+        } catch (e) {
+            throw new RepositoryError(`Error al obtener acreedores de la base de datos.`, e);
+        }
+
+        if (!acreedores) {
+            throw new ItemNotFoundError("Acreedores");
+        }
+
+        return acreedores;
     }
 
-    public async actualizar(id: string, entidad: any): Promise<any> {
-        const idNumerico = Number(id);
-
-        if (Number.isNaN(idNumerico)) {
-            throw new Error("Id inválido");
+    public async actualizar(id: number, dto: ActualizarAcreedorDTO): Promise<Acreedor> {
+        if (!dto) {
+            throw new InvalidDtoError;
         }
 
-        if (!entidad) {
-            throw new Error("Entidad no proporcionada");
+        try {
+            const dataUpdate: AcreedorUpdateInput = {
+                ...(dto.nombre !== undefined && { nombre: dto.nombre }),
+                ...(dto.telefono !== undefined && { telefono: dto.telefono }),
+            };
+
+            const acreedorUpdateado = await prisma.acreedor.update({
+                where: { id: id },
+                data: dataUpdate
+            });
+
+            return acreedorUpdateado;
+        } catch (e) {
+            throw new RepositoryError(`Error al actualizar acreedor.`, e);
         }
-
-        const acreedorActualizado = await prisma.acreedor.update({
-            where: { id: idNumerico },
-            data: entidad,
-        });
-
-        return acreedorActualizado;
     }
 
-    public async eliminar(id: string): Promise<any> {
-        const idNumerico = Number(id);
-
-        if (Number.isNaN(idNumerico)) {
-            throw new Error("Id inválido");
+    public async eliminar(id: number): Promise<Acreedor> {
+        try {
+            return await prisma.acreedor.delete({ where: { id } });
+        } catch (e) {
+            if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+                throw new ItemNotFoundError("Acreedor");
+            }
+            throw new RepositoryError(`Error al eliminar acreedor.`, e);
         }
-
-        const acreedorEliminado = await prisma.acreedor.delete({
-            where: { id: idNumerico },
-        });
-
-        return acreedorEliminado;
     }
 }
