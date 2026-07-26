@@ -42,9 +42,11 @@
     "baseUrl": "./src",
     "paths": {
         "@prismaClient" : ["lib/prisma.ts"],
-        "@prismaGenerated" : ["lib/prisma/generated/client.ts"],
+        "@prismaGeneratedClient" : ["lib/prisma/generated/client.ts"],
+        "@prismaGenerated/*" :  ["lib/prisma/generated/*"],
         "@deudas/*": ["modules/deudas/*"],
         "@acreedores/*": ["modules/acreedores/*"],
+        "@errors/*": ["errors/*"]
     }
   },
   "ts-node": {
