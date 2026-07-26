@@ -52,11 +52,6 @@ export default class AcreedoresRepository implements IRepository<Acreedor, Crear
         } catch (e) {
             throw new RepositoryError(`Error al obtener acreedores de la base de datos.`, e);
         }
-
-        if (!acreedores) {
-            throw new ItemNotFoundError("Acreedores");
-        }
-
         return acreedores;
     }
 
