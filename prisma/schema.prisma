@@ -28,8 +28,8 @@ model Cuota {
     fechaVencimiento   DateTime?
     fechaCreacion      DateTime  @default(now())
     fechaActualizacion DateTime  @updatedAt
-    deuda              Deuda?    @relation(fields: [deudaId], references: [id])
-    deudaId            Int?
+    deuda              Deuda     @relation(fields: [deudaId], references: [id])
+    deudaId            Int
 }
 
 model Acreedor {
