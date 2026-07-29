@@ -46,6 +46,7 @@
         "@prismaGenerated/*" :  ["lib/prisma/generated/*"],
         "@deudas/*": ["modules/deudas/*"],
         "@acreedores/*": ["modules/acreedores/*"],
+        "@cuotas/*":["modules/cuotas/*"],
         "@errors/*": ["errors/*"],
         "@utils/*": ["utils/*"],
 
