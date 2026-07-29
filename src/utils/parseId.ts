@@ -1,7 +1,7 @@
 import InvalidDtoError from "@errors/InvalidDtoError";
 import InvalidQueryError from "@errors/InvalidQueryError";
 
-export function parseIdQuery(idString: string | undefined): number {
+export function parseId(idString: string | undefined): number {
     if (!idString) {
         throw new InvalidQueryError('Parametro ID no encontrado');
     }
