@@ -47,6 +47,7 @@
         "@deudas/*": ["modules/deudas/*"],
         "@acreedores/*": ["modules/acreedores/*"],
         "@cuotas/*":["modules/cuotas/*"],
+        "@usuarios/*":["modules/usuarios/*"],
         "@errors/*": ["errors/*"],
         "@utils/*": ["utils/*"],
 

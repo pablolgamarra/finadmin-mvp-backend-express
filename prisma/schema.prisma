@@ -42,3 +42,12 @@ model Acreedor {
     deudas             Deuda[]
     eliminado          Boolean  @default(false)
 }
+
+model Usuario {
+    id                 Int      @id @default(autoincrement())
+    nombre             String
+    correo             String   @unique
+    password           String
+    fechaCreacion      DateTime @default(now())
+    fechaActualizacion DateTime @updatedAt
+}
