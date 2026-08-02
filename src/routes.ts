@@ -11,6 +11,7 @@ router.use(validateJSONReqs);
 router.use("/auth", usuariosRouter)
 router.use("/deudas", deudasRouter);
 router.use("/acreedores", acreedoresRouter);
+router.use("/usuarios", usuariosRouter);
 
 router.use(errorHandler);
 
