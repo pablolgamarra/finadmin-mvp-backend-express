@@ -8,7 +8,6 @@ import { validateJSONReqs } from "modules/middlewares/validateJsonRequests";
 const router: Router = Router();
 
 router.use(validateJSONReqs);
-router.use("/auth", usuariosRouter)
 router.use("/deudas", deudasRouter);
 router.use("/acreedores", acreedoresRouter);
 router.use("/usuarios", usuariosRouter);

@@ -20,5 +20,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
         });
     }
 
+    console.log("Error no manejado:", err);
+
     return res.status(500).json({ error: "Error interno del servidor" });
 };

@@ -14,13 +14,42 @@ export default class UsuariosRepository {
 
             return await prisma.usuario.create({
                 data: { nombre: data.nombre, correo: data.correo, password: passwordHash },
-                select: { id: true, email: true, fechaCreacion: true }
+                select: { id: true, correo: true, fechaCreacion: true }
             });
         } catch (e) {
             if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
                 throw new AuthError("El email ya está registrado");
             }
-            throw new RepositoryError("Error al registrar usuario");
+            throw new RepositoryError(`Error al registrar usuario.`, e.message);
+        }
+    }
+
+    public async listarUsuarios() {
+        try {
+            const usuarios = await prisma.usuario.findMany({
+                select: { id: true, nombre: true, correo: true, fechaCreacion: true }
+            });
+
+            return usuarios;
+        } catch (e) {
+            throw new RepositoryError("Error al buscar usuarios.", e);
+        }
+    }
+
+    public async buscarPorId(id: number) {
+        try {
+            const usuario = await prisma.usuario.findUnique({
+                where: { id },
+                select: { id: true, correo: true, fechaCreacion: true, fechaActualizacion: true, nombre: true }
+            });
+
+            if (!usuario) {
+                throw new AuthError("Usuario no encontrado");
+            }
+
+            return { correo: usuario.correo, id: usuario.id };
+        } catch (e) {
+            throw new RepositoryError("Error al buscar usuario por ID.", e);
         }
     }
 

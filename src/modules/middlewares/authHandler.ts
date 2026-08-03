@@ -3,7 +3,11 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import AuthError from "@errors/AuthError";
 
-export const authHandler = (req: Request, res: Response, next: NextFunction) => {
+export interface AuthRequest extends Request {
+    userId?: number;
+}
+
+export const authHandler = (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.cookies?.token;
 
     if (!token) {
